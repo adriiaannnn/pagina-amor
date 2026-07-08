@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Estilos específicos del admin */
         .admin-container {
             max-width: 1000px;
             margin: 0 auto;
@@ -35,7 +34,7 @@
             color: #e91e63;
         }
 
-        .admin-header .btn-logout {
+        .admin-header .btn-volver {
             background: #e91e63;
             color: #fff;
             border: none;
@@ -44,14 +43,14 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
+            text-decoration: none;
         }
 
-        .admin-header .btn-logout:hover {
+        .admin-header .btn-volver:hover {
             background: #c2185b;
             transform: scale(1.05);
         }
 
-        /* Login */
         .login-box {
             background: rgba(255,255,255,0.95);
             backdrop-filter: blur(10px);
@@ -101,13 +100,6 @@
             box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
         }
 
-        .login-error {
-            color: #e91e63;
-            margin-top: 10px;
-            display: none;
-        }
-
-        /* Formulario de subida */
         .upload-section {
             background: rgba(255,255,255,0.92);
             backdrop-filter: blur(10px);
@@ -140,7 +132,31 @@
             margin-bottom: 5px;
         }
 
-        .upload-form input[type="file"],
+        .upload-form input[type="file"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px dashed #e0e0e0;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease;
+            background: #fafafa;
+            cursor: pointer;
+        }
+
+        .upload-form input[type="file"]:hover {
+            border-color: #e91e63;
+        }
+
+        .upload-form input[type="file"]::file-selector-button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #e91e63, #9c27b0);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
         .upload-form input[type="text"] {
             width: 100%;
             padding: 12px 16px;
@@ -174,7 +190,23 @@
             box-shadow: 0 8px 25px rgba(233, 30, 99, 0.3);
         }
 
-        /* Lista de contenido */
+        .upload-form .preview-container {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .upload-form .preview-container img,
+        .upload-form .preview-container video {
+            max-width: 200px;
+            max-height: 150px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
         .content-list {
             background: rgba(255,255,255,0.92);
             backdrop-filter: blur(10px);
@@ -264,11 +296,6 @@
             cursor: pointer;
             font-size: 0.8rem;
             transition: all 0.3s ease;
-            opacity: 0;
-        }
-
-        .content-item:hover .btn-eliminar {
-            opacity: 1;
         }
 
         .content-item .btn-eliminar:hover {
@@ -276,7 +303,6 @@
             background: #c2185b;
         }
 
-        /* Mensajes */
         .mensaje {
             padding: 12px 20px;
             border-radius: 12px;
@@ -298,25 +324,30 @@
             border: 1px solid #ef9a9a;
         }
 
-        /* Responsive admin */
+        .info-box {
+            background: #e3f2fd;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196f3;
+        }
+
+        .info-box i {
+            color: #2196f3;
+            margin-right: 10px;
+        }
+
         @media (max-width: 768px) {
             .upload-form {
                 grid-template-columns: 1fr;
             }
-
             .admin-header {
                 flex-direction: column;
                 text-align: center;
             }
-
             .content-grid {
                 grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
-        }
-
-        /* Ocultar secciones */
-        .admin-content {
-            display: none;
         }
     </style>
 </head>
@@ -330,52 +361,308 @@
             <p style="color: #777; margin-bottom: 20px;">Ingresa la contraseña para gestionar el contenido</p>
             <input type="password" id="passwordInput" placeholder="Contraseña..." onkeydown="if(event.key==='Enter') login()">
             <button class="btn-login" onclick="login()"><i class="fas fa-unlock"></i> Acceder</button>
-            <p class="login-error" id="loginError">❌ Contraseña incorrecta. Intenta de nuevo.</p>
+            <p style="color:#e91e63; margin-top:10px; display:none;" id="loginError">❌ Contraseña incorrecta</p>
         </div>
 
         <!-- ADMIN CONTENT -->
-        <div id="adminContent" class="admin-content">
+        <div id="adminContent" style="display:none;">
             <div class="admin-header">
                 <h1><i class="fas fa-heart" style="color:#e91e63;"></i> Panel de Administración</h1>
-                <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button>
+                <a href="index.html" class="btn-volver"><i class="fas fa-eye"></i> Ver página</a>
             </div>
 
-            <!-- Mensajes -->
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <strong>¿Cómo subir imágenes?</strong> Selecciona una imagen o video desde tu PC, escribe una frase romántica y haz clic en "Subir contenido". <br>
+                <small>⚠️ Las imágenes se guardan en tu navegador. Si cambias de dispositivo, no se verán.</small>
+            </div>
+
             <div id="mensaje" class="mensaje"></div>
 
-            <!-- Subir contenido -->
             <div class="upload-section">
-                <h2><i class="fas fa-upload"></i> Subir nuevo contenido</h2>
-                <form id="uploadForm" class="upload-form" onsubmit="subirContenido(event)">
-                    <div>
-                        <label><i class="fas fa-image"></i> Imagen o Video</label>
+                <h2><i class="fas fa-upload"></i> Subir desde tu PC</h2>
+                <form class="upload-form" id="uploadForm">
+                    <div class="full-width">
+                        <label><i class="fas fa-image"></i> Selecciona una imagen o video</label>
                         <input type="file" id="archivoInput" accept="image/*,video/*" required>
                     </div>
-                    <div>
-                        <label><i class="fas fa-tag"></i> Tipo</label>
-                        <input type="text" id="tipoInput" value="imagen" readonly style="background:#f0f0f0;">
+                    <div class="full-width preview-container" id="previewContainer">
+                        <p style="color:#888; margin-bottom: 8px;">Vista previa:</p>
+                        <div id="previewContent"></div>
                     </div>
                     <div class="full-width">
                         <label><i class="fas fa-quote-left"></i> Frase romántica</label>
                         <input type="text" id="fraseInput" placeholder="Escribe una frase especial..." required>
                     </div>
                     <div class="full-width">
-                        <button type="submit" class="btn-subir"><i class="fas fa-cloud-upload-alt"></i> Subir contenido</button>
+                        <button type="button" class="btn-subir" onclick="subirContenido()">
+                            <i class="fas fa-cloud-upload-alt"></i> Subir contenido
+                        </button>
                     </div>
                 </form>
             </div>
 
-            <!-- Lista de contenido -->
             <div class="content-list">
                 <h2><i class="fas fa-list"></i> Contenido actual</h2>
-                <div id="contentGrid" class="content-grid">
-                    <!-- Se carga desde JavaScript -->
-                </div>
+                <div id="contentGrid" class="content-grid"></div>
                 <p style="text-align: center; color: #999; margin-top: 20px;" id="emptyMessage">No hay contenido aún. ¡Sube tu primera foto o video!</p>
             </div>
         </div>
     </div>
 
-    <script src="admin.js"></script>
+    <script>
+        // ===== CORAZONES FLOTANTES =====
+        function crearCorazonesAdmin() {
+            const container = document.getElementById('floatingHearts');
+            const simbolos = ['♥', '❤', '💕', '💖', '💗'];
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = simbolos[Math.floor(Math.random() * simbolos.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.fontSize = (12 + Math.random() * 28) + 'px';
+                heart.style.animationDuration = (12 + Math.random() * 20) + 's';
+                heart.style.animationDelay = (Math.random() * 25) + 's';
+                heart.style.opacity = 0.1 + Math.random() * 0.2;
+                container.appendChild(heart);
+            }
+        }
+        crearCorazonesAdmin();
+
+        // ===== VARIABLES =====
+        const CONTRASENA = '1234';
+        let archivoSeleccionado = null;
+        let urlArchivo = null;
+
+        // ===== LOGIN =====
+        function login() {
+            const pass = document.getElementById('passwordInput').value;
+            if (pass === CONTRASENA) {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
+                cargarContenidoAdmin();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        // ===== VISTA PREVIA DEL ARCHIVO =====
+        document.getElementById('archivoInput').addEventListener('change', function(e) {
+            const file = this.files[0];
+            if (!file) return;
+
+            archivoSeleccionado = file;
+            const container = document.getElementById('previewContainer');
+            const content = document.getElementById('previewContent');
+
+            // Crear URL temporal
+            if (urlArchivo) URL.revokeObjectURL(urlArchivo);
+            urlArchivo = URL.createObjectURL(file);
+
+            container.style.display = 'block';
+
+            if (file.type.startsWith('video')) {
+                content.innerHTML = `<video src="${urlArchivo}" controls style="max-width:200px; max-height:150px; border-radius:10px;"></video>`;
+            } else {
+                content.innerHTML = `<img src="${urlArchivo}" style="max-width:200px; max-height:150px; border-radius:10px; object-fit:cover;">`;
+            }
+        });
+
+        // ===== FUNCIONES DE CONTENIDO =====
+        function getContenido() {
+            try {
+                return JSON.parse(localStorage.getItem('contenidoAmor') || '[]');
+            } catch {
+                return [];
+            }
+        }
+
+        function guardarContenido(datos) {
+            localStorage.setItem('contenidoAmor', JSON.stringify(datos));
+            cargarContenidoAdmin();
+        }
+
+        function mostrarMensaje(texto, tipo) {
+            const msg = document.getElementById('mensaje');
+            msg.textContent = texto;
+            msg.className = 'mensaje ' + tipo;
+            msg.style.display = 'block';
+            setTimeout(() => { msg.style.display = 'none'; }, 4000);
+        }
+
+        // ===== SUBIR CONTENIDO DESDE PC =====
+        function subirContenido() {
+            const file = document.getElementById('archivoInput').files[0];
+            const frase = document.getElementById('fraseInput').value.trim();
+
+            if (!file) {
+                mostrarMensaje('❌ Por favor, selecciona una imagen o video.', 'error');
+                return;
+            }
+
+            if (!frase) {
+                mostrarMensaje('❌ Por favor, escribe una frase romántica.', 'error');
+                return;
+            }
+
+            // Detectar tipo
+            const tipo = file.type.startsWith('video') ? 'video' : 'imagen';
+
+            // Crear URL para el archivo
+            const url = URL.createObjectURL(file);
+
+            const datos = getContenido();
+            const nuevoId = datos.length > 0 ? Math.max(...datos.map(i => i.id)) + 1 : 1;
+
+            datos.push({
+                id: nuevoId,
+                tipo: tipo,
+                url: url,
+                frase: frase,
+                nombre: file.name
+            });
+
+            guardarContenido(datos);
+
+            // Limpiar formulario
+            document.getElementById('archivoInput').value = '';
+            document.getElementById('fraseInput').value = '';
+            document.getElementById('previewContainer').style.display = 'none';
+            document.getElementById('previewContent').innerHTML = '';
+            archivoSeleccionado = null;
+
+            mostrarMensaje('✅ ¡Contenido subido con éxito! ❤️', 'success');
+        }
+
+        // ===== ELIMINAR ITEM =====
+        function eliminarItemAdmin(id) {
+            if (confirm('¿Eliminar este elemento?')) {
+                let datos = getContenido();
+                const item = datos.find(i => i.id === id);
+                if (item && item.url && item.url.startsWith('blob:')) {
+                    URL.revokeObjectURL(item.url);
+                }
+                datos = datos.filter(item => item.id !== id);
+                guardarContenido(datos);
+                mostrarMensaje('🗑️ Elemento eliminado.', 'success');
+            }
+        }
+
+        // ===== ELIMINAR TODO =====
+        function eliminarTodoAdmin() {
+            if (confirm('¿Eliminar TODO el contenido?')) {
+                const datos = getContenido();
+                datos.forEach(item => {
+                    if (item.url && item.url.startsWith('blob:')) {
+                        URL.revokeObjectURL(item.url);
+                    }
+                });
+                localStorage.removeItem('contenidoAmor');
+                cargarContenidoAdmin();
+                mostrarMensaje('🗑️ Todo el contenido ha sido eliminado.', 'success');
+            }
+        }
+
+        // ===== CARGAR CONTENIDO EN ADMIN =====
+        function cargarContenidoAdmin() {
+            const grid = document.getElementById('contentGrid');
+            const datos = getContenido();
+
+            if (datos.length === 0) {
+                grid.innerHTML = '';
+                document.getElementById('emptyMessage').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('emptyMessage').style.display = 'none';
+            grid.innerHTML = '';
+
+            datos.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'content-item';
+
+                if (item.tipo === 'video') {
+                    const video = document.createElement('video');
+                    video.className = 'preview-video';
+                    video.muted = true;
+                    const source = document.createElement('source');
+                    source.src = item.url;
+                    source.type = 'video/mp4';
+                    video.appendChild(source);
+                    div.appendChild(video);
+                    const badge = document.createElement('span');
+                    badge.className = 'tipo-badge';
+                    badge.textContent = '🎬 VIDEO';
+                    div.appendChild(badge);
+                } else {
+                    const img = document.createElement('img');
+                    img.className = 'preview';
+                    img.src = item.url;
+                    img.alt = 'Contenido';
+                    img.onerror = function() { 
+                        this.src = 'https://via.placeholder.com/200x150?text=No+disponible';
+                    };
+                    div.appendChild(img);
+                    const badge = document.createElement('span');
+                    badge.className = 'tipo-badge';
+                    badge.textContent = '📷 IMAGEN';
+                    div.appendChild(badge);
+                }
+
+                const info = document.createElement('div');
+                info.className = 'info';
+                info.innerHTML = `
+                    <strong>#${item.id}</strong>
+                    <div class="frase-preview">"${item.frase}"</div>
+                    ${item.nombre ? `<small style="color:#999;font-size:0.7rem;">${item.nombre}</small>` : ''}
+                `;
+                div.appendChild(info);
+
+                const btnEliminar = document.createElement('button');
+                btnEliminar.className = 'btn-eliminar';
+                btnEliminar.textContent = '✕';
+                btnEliminar.onclick = () => eliminarItemAdmin(item.id);
+                div.appendChild(btnEliminar);
+
+                grid.appendChild(div);
+            });
+
+            // Agregar botón eliminar todo si hay contenido
+            const existingBtn = document.getElementById('btnEliminarTodo');
+            if (!existingBtn && datos.length > 0) {
+                const btnContainer = document.createElement('div');
+                btnContainer.style.cssText = 'grid-column: 1 / -1; text-align: center; margin-top: 10px;';
+                const btn = document.createElement('button');
+                btn.id = 'btnEliminarTodo';
+                btn.textContent = '🗑️ Eliminar todo';
+                btn.style.cssText = `
+                    padding: 10px 30px;
+                    background: #e91e63;
+                    color: #fff;
+                    border: none;
+                    border-radius: 30px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                `;
+                btn.onmouseover = () => btn.style.transform = 'scale(1.05)';
+                btn.onmouseout = () => btn.style.transform = 'scale(1)';
+                btn.onclick = eliminarTodoAdmin;
+                btnContainer.appendChild(btn);
+                grid.appendChild(btnContainer);
+            }
+        }
+
+        // ===== INICIALIZAR =====
+        cargarContenidoAdmin();
+
+        // Enter para login
+        document.getElementById('passwordInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') login();
+        });
+
+        console.log('🔐 Panel de administración cargado');
+        console.log('📸 Puedes subir imágenes y videos desde tu PC');
+    </script>
 </body>
 </html>
