@@ -1,3 +1,6 @@
+// ===== CONTRASEÑA (cámbiala por la que quieras) =====
+const CONTRASENA_ADMIN = "amor2026"; // 🔒 Cambia esto por tu contraseña
+
 // ===== VARIABLE GLOBAL =====
 let tipoSeleccionado = 'imagen';
 
@@ -27,9 +30,57 @@ function seleccionarTipo(tipo) {
 }
 
 function toggleAdmin() {
-    const panel = document.getElementById('adminPanel');
-    panel.classList.toggle('active');
+    const adminPanel = document.getElementById('adminPanel');
+    
+    if (adminPanel.classList.contains('active')) {
+        adminPanel.classList.remove('active');
+        // Cerrar sesión al cerrar el panel
+        sessionStorage.removeItem('adminAuth');
+        // Ocultar botones de eliminar
+        document.querySelectorAll('.media-card .media-container button').forEach(btn => {
+            btn.style.opacity = '0';
+        });
+    } else {
+        // Mostrar modal de login en lugar de abrir directamente
+        document.getElementById('modalLogin').style.display = 'flex';
+        document.getElementById('passwordInputAdmin').focus();
+    }
 }
+
+function verificarPassword() {
+    const input = document.getElementById('passwordInputAdmin');
+    const error = document.getElementById('errorLogin');
+    
+    if (input.value === CONTRASENA_ADMIN) {
+        // Login exitoso
+        document.getElementById('modalLogin').style.display = 'none';
+        document.getElementById('adminPanel').classList.add('active');
+        sessionStorage.setItem('adminAuth', 'true');
+        input.value = '';
+        error.style.display = 'none';
+        
+        // Mostrar botones de eliminar
+        document.querySelectorAll('.media-card .media-container button').forEach(btn => {
+            btn.style.opacity = '1';
+        });
+    } else {
+        error.style.display = 'block';
+        input.value = '';
+        input.focus();
+    }
+}
+
+// Cerrar modal de login al hacer clic fuera
+document.getElementById('modalLogin').addEventListener('click', function(e) {
+    if (e.target === this) {
+        this.style.display = 'none';
+    }
+});
+
+// Enter para login
+document.getElementById('passwordInputAdmin').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') verificarPassword();
+});
 
 function getContenido() {
     try {
@@ -133,15 +184,10 @@ function cargarGaleria() {
         };
         container.appendChild(btnEliminar);
 
-        // Mostrar botón eliminar en admin
-        card.addEventListener('mouseenter', () => {
-            if (document.getElementById('adminPanel').classList.contains('active')) {
-                btnEliminar.style.opacity = '1';
-            }
-        });
-        card.addEventListener('mouseleave', () => {
-            btnEliminar.style.opacity = '0';
-        });
+        // Mostrar botón eliminar si admin está activo
+        if (document.getElementById('adminPanel').classList.contains('active')) {
+            btnEliminar.style.opacity = '1';
+        }
 
         // Contenido multimedia
         if (item.tipo === 'video') {
@@ -212,66 +258,3 @@ function crearConfetiCorazones(x, y) {
         confeti.style.cssText = `
             position: fixed;
             left: ${x - 20 + Math.random() * 40}px;
-            top: ${y - 20 + Math.random() * 40}px;
-            font-size: ${16 + Math.random() * 24}px;
-            pointer-events: none;
-            z-index: 9999;
-            transition: all 1.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            opacity: 1;
-        `;
-        document.body.appendChild(confeti);
-        setTimeout(() => {
-            confeti.style.transform = `
-                translate(${(Math.random() - 0.5) * 250}px, ${-180 - Math.random() * 250}px) 
-                rotate(${Math.random() * 720}deg) 
-                scale(${0.3 + Math.random() * 1.8})
-            `;
-            confeti.style.opacity = '0';
-        }, 50);
-        setTimeout(() => confeti.remove(), 1500);
-    }
-}
-
-// ===== MODAL SORPRESA =====
-const modal = document.getElementById('modalSorpresa');
-
-document.getElementById('btnSorpresa').addEventListener('click', () => {
-    modal.classList.add('active');
-    for (let i = 0; i < 8; i++) {
-        setTimeout(() => {
-            crearConfetiCorazones(
-                window.innerWidth / 2 + (Math.random() - 0.5) * 400,
-                window.innerHeight / 2 + (Math.random() - 0.5) * 300
-            );
-        }, i * 150);
-    }
-});
-
-document.getElementById('closeModal').addEventListener('click', () => {
-    modal.classList.remove('active');
-});
-
-modal.addEventListener('click', e => {
-    if (e.target === modal) modal.classList.remove('active');
-});
-
-document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') modal.classList.remove('active');
-});
-
-// ===== INICIALIZAR =====
-cargarGaleria();
-
-// Mostrar botones eliminar si admin está activo
-document.addEventListener('DOMContentLoaded', () => {
-    const observer = new MutationObserver(() => {
-        const isAdmin = document.getElementById('adminPanel').classList.contains('active');
-        document.querySelectorAll('.media-card .media-container button').forEach(btn => {
-            btn.style.opacity = isAdmin ? '1' : '0';
-        });
-    });
-    observer.observe(document.getElementById('adminPanel'), { attributes: true, attributeFilter: ['class'] });
-});
-
-console.log('💕 Página de amor cargada');
-console.log('🔑 Haz clic en "Administrar" para agregar o eliminar contenido');

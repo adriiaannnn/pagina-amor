@@ -62,6 +62,17 @@
         </div>
     </div>
 
+    <!-- MODAL LOGIN -->
+    <div class="modal-login" id="modalLogin">
+        <div class="modal-login-content">
+            <h2>🔐 Acceso Administrador</h2>
+            <p style="color:#777;margin-bottom:15px;">Ingresa la contraseña para gestionar el contenido</p>
+            <input type="password" id="passwordInputAdmin" placeholder="Contraseña...">
+            <button onclick="verificarPassword()">Entrar</button>
+            <p id="errorLogin" style="color:#e91e63;display:none;margin-top:10px;">❌ Contraseña incorrecta</p>
+        </div>
+    </div>
+
     <!-- PANEL ADMIN -->
     <div class="admin-panel" id="adminPanel">
         <button class="btn-cerrar" onclick="toggleAdmin()">✕</button>

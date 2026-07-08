@@ -388,6 +388,79 @@ body::before {
     font-size: 1.1rem;
 }
 
+/* ===== MODAL LOGIN ===== */
+.modal-login {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.modal-login-content {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: modalPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-login-content h2 {
+    margin-bottom: 10px;
+    color: #e91e63;
+    font-size: 1.8rem;
+}
+
+.modal-login-content input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #f0c0d0;
+    border-radius: 30px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.modal-login-content input:focus {
+    outline: none;
+    border-color: #e91e63;
+}
+
+.modal-login-content button {
+    background: linear-gradient(135deg, #e91e63, #9c27b0);
+    color: white;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.modal-login-content button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
+}
+
+@media (max-width: 480px) {
+    .modal-login-content {
+        padding: 30px 20px;
+    }
+    .modal-login-content h2 {
+        font-size: 1.4rem;
+    }
+}
+
 /* ===== ADMIN ===== */
 .admin-link {
     text-align: center;
