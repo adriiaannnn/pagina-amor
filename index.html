@@ -87,11 +87,16 @@
             </button>
         </div>
         
+        <!-- BOTÓN PARA SUBIR ARCHIVOS DESDE PC -->
+        <button class="btn-admin btn-subir-archivo" onclick="subirArchivoDesdePC()" style="margin-bottom:10px; background: linear-gradient(135deg, #4CAF50, #2E7D32);">
+            <i class="fas fa-upload"></i> 📁 Subir desde mi PC
+        </button>
+        
         <input type="text" id="urlInput" placeholder="URL de la imagen o video">
         <textarea id="fraseInput" placeholder="Escribe una frase romántica..."></textarea>
         
         <button class="btn-admin" onclick="agregarContenido()">
-            <i class="fas fa-plus"></i> Agregar contenido
+            <i class="fas fa-plus"></i> Agregar por URL
         </button>
         
         <hr style="margin:15px 0;border-color:#eee;">
