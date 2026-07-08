@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💕 Para ti, mi amor 💕</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="floating-hearts" id="floatingHearts"></div>
+    
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>💕 Para ti, mi amor 💕</h1>
+            <p class="subtitle">
+                <i class="fas fa-heart"></i>
+                Cada imagen y video guarda un pedacito de nosotros
+                <i class="fas fa-heart"></i>
+            </p>
+        </div>
+
+        <!-- INDICADOR -->
+        <div class="click-hint-wrapper">
+            <p class="click-hint">
+                <i class="fas fa-hand-pointer"></i>
+                Haz clic en cualquier foto o video para descubrir un mensaje especial
+                <i class="fas fa-hand-pointer"></i>
+            </p>
+        </div>
+
+        <!-- GALERÍA -->
+        <div class="gallery" id="gallery"></div>
+
+        <!-- BOTÓN SORPRESA -->
+        <button class="btn-sorpresa" id="btnSorpresa">
+            <i class="fas fa-gift"></i> ¡Toca para una sorpresa especial!
+        </button>
+
+        <!-- ADMIN BUTTON -->
+        <div class="admin-link">
+            <button onclick="toggleAdmin()" class="btn-admin-toggle">
+                🔑 Administrar
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL SORPRESA -->
+    <div class="modal-sorpresa" id="modalSorpresa">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <div class="big-heart">💖</div>
+            <h2>¡Te quiero!</h2>
+            <p>
+                <i class="fas fa-quote-left"></i>
+                Eres la persona más increíble que ha cruzado mi camino.
+                Gracias por llenar mi vida de amor, alegría y momentos inolvidables.
+                <i class="fas fa-quote-right"></i>
+            </p>
+            <p class="firma">❤️ Siempre tuyo/a ❤️</p>
+        </div>
+    </div>
+
+    <!-- PANEL ADMIN -->
+    <div class="admin-panel" id="adminPanel">
+        <button class="btn-cerrar" onclick="toggleAdmin()">✕</button>
+        <h3>📝 Administrar contenido</h3>
+        
+        <div class="tipo-selector">
+            <button class="active" data-tipo="imagen" onclick="seleccionarTipo('imagen')">
+                <i class="fas fa-image"></i> Imagen
+            </button>
+            <button data-tipo="video" onclick="seleccionarTipo('video')">
+                <i class="fas fa-video"></i> Video
+            </button>
+        </div>
+        
+        <input type="text" id="urlInput" placeholder="URL de la imagen o video">
+        <textarea id="fraseInput" placeholder="Escribe una frase romántica..."></textarea>
+        
+        <button class="btn-admin" onclick="agregarContenido()">
+            <i class="fas fa-plus"></i> Agregar contenido
+        </button>
+        
+        <hr style="margin:15px 0;border-color:#eee;">
+        
+        <button class="btn-admin btn-danger" onclick="eliminarTodo()">
+            <i class="fas fa-trash"></i> Eliminar todo
+        </button>
+        
+        <button class="toggle-admin" onclick="toggleAdmin()">
+            <i class="fas fa-eye"></i> Ver página
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
